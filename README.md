@@ -3,7 +3,7 @@
 **Citizen voice + bus-camera evidence → Gemini → a ranked, state-ready public-works list.**
 Build with AI: Code for Communities (2nd ed.) · **Track 1 — AI for Digital Public Infrastructure & Governance** · Team **The Road Runners**
 
-🔗 **Live prototype:** https://sadak-samvad-c4c.web.app  ·  🎬 **Demo video:** _VIDEO_URL_
+🔗 **Live prototype:** https://sadak-samvad-c4c.web.app  ·  🎬 **Demo video:** https://drive.google.com/file/d/1aH5yoho6n3bnd8aDFqoYZTT5_y2hcrTl/view?usp=sharing
 
 ---
 
