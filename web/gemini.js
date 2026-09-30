@@ -30,6 +30,8 @@ const Gemini = (() => {
     if (opts.json) { body.generationConfig.responseMimeType = 'application/json'; if (opts.schema) body.generationConfig.responseSchema = opts.schema; }
     const list = model ? [model, ...models().filter(m => m !== model)] : models();
     let last;
+    for (let round = 0; round < 3; round++) {
+    if (round) await new Promise(r => setTimeout(r, 1500 * round));
     for (const m of list) {
       try { const out = await call(m, body); model = m; return opts.json ? { ...JSON.parse(out.txt), _model: m } : { text: out.txt, _model: m }; }
       catch (e) {
@@ -38,6 +40,7 @@ const Gemini = (() => {
         if (!modelProblem) throw e;   // wrong key etc. -> surface it; busy/missing model -> try the next one
         if (model === m) model = null;
       }
+    }
     }
     throw last;
   }
