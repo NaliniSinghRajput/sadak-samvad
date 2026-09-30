@@ -71,7 +71,10 @@ Security: the browser key is restricted to the site's domain (HTTP referrer) and
 * **Digital Public Good:** open source, open schemas (GeoJSON events, JSON tickets), privacy by design (plates blurred on device, no video leaves the bus). Any BRICS city can fork it with its own languages.
 * **Pilot in weeks:** 1 city bus depot + 1 municipal corporation + the state works register.
 
-**Scale path on Google Cloud:** Cloud Run intake API · WhatsApp Business webhook · BigQuery for national analytics · Vertex AI for hotspot forecasting (monsoon waterlogging) · Google Maps Platform · Cloud Speech-to-Text for IVR.
+## Next phase (in progress): BigQuery + Vertex AI
+* **BigQuery** — streaming export of every ticket and bus-camera event from Firebase; joined with Census, data.gov.in and PMGSY / Smart Cities / AMRUT works registers; ward-level hotspot scores for every state nightly; the *% of sanctioned spend landing on citizen hotspots* per district, state and scheme.
+* **Vertex AI** — forecasting of pothole and monsoon-waterlogging hotspots (tickets + camera events + IMD rainfall); custom training/serving of the pothole detector on the growing bus-camera dataset, pushed to every edge box; a prioritisation model learning from completed works; Gemini on Vertex AI for enterprise quotas, India data residency and server-side keys.
+* Also: Cloud Run intake API · WhatsApp Business webhook · Google Maps Platform · Cloud Speech-to-Text for IVR.
 
 ## What is new for this hackathon (Rule 2)
 The edge camera node (`edge/`) was first built by the team for Smart India Hackathon 2026 (PS 26124). **Built new for this challenge:** the Gemini multimodal multilingual intake, Gemini vision verification, the fusion/priority engine, the investment-alignment analysis, the Gemini policy brief and Q&A, the Firebase live store and the whole governance web app.
