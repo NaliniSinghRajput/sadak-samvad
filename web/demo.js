@@ -37,7 +37,7 @@
     await showCard(`<div style="font-size:22px;color:#91a3bb">Build with AI: Code for Communities · Track 1 — AI for Digital Public Infrastructure & Governance</div>
       <div style="font-size:84px;font-weight:700;margin:20px 0">Sadak Samvad <span style="color:#f5a524">सड़क संवाद</span></div>
       <div style="font-size:30px">Citizen voice + bus-camera evidence → <b style="color:#2bb3a3">Gemini</b> → a ranked, funded public-works list for every state</div>
-      <div style="font-size:20px;color:#91a3bb;margin-top:30px">Team The Road Runners</div>`,
+      <div style="font-size:20px;color:#91a3bb;margin-top:30px">Team The Road Rangers</div>`,
       'Sadak Samvad. A multilingual AI platform, built as a digital public good, that turns citizen development requests and automatic road evidence from city buses into a ranked, funded list of public works, for every state in India.');
     await say('Today, road and civic complaints sit in fragmented portals, in twenty two languages, and are never compared with where public money is actually being sanctioned. Let us see how Gemini fixes that, live.');
     card.remove();

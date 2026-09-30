@@ -1,6 +1,6 @@
 # Sadak Samvad — सड़क संवाद
 
-**Track 1 · AI for Digital Public Infrastructure & Governance** — Team *The Road Runners*
+**Track 1 · AI for Digital Public Infrastructure & Governance** — Team *The Road Rangers*
 
 Roads, drains and streetlights are the development requests Indians raise most often, yet complaints sit in fragmented portals, in 22 languages, with no link to where money is actually being sanctioned. **Sadak Samvad** is a multilingual, voice-first Digital Public Good that turns two streams into one ranked, state-ready works list:
 
