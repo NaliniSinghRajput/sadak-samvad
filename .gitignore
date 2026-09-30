@@ -1,0 +1,6 @@
+web/config.js
+node_modules/
+.firebase/
+*.log
+__pycache__/
+*.pt

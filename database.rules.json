@@ -1,0 +1,15 @@
+{
+  "rules": {
+    ".read": false, ".write": false,
+    "sadak": {
+      "reports": {
+        ".read": true,
+        ".indexOn": ["ts"],
+        "$id": {
+          ".write": "!data.exists()",
+          ".validate": "newData.hasChildren(['lat','lon','category','severity','district','state']) && newData.child('severity').isNumber() && newData.child('lat').isNumber() && newData.child('lon').isNumber() && newData.child('text').val().length < 2000"
+        }
+      }
+    }
+  }
+}

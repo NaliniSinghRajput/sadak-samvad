@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sadak Samvad — AI for road & civic infrastructure governance</title>
+<meta name="description" content="Citizens report in any Indian language by voice, text or photo; bus cameras add evidence; Gemini turns both into a ranked, state-ready public-works list.">
+<link rel="icon" href="assets/favicon.svg">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <img src="assets/favicon.svg" alt="" width="34" height="34">
+    <div><b>Sadak Samvad</b> <span class="dev">सड़क संवाद</span><small>Citizen voice + bus-camera evidence → Gemini → ranked public works, for every state</small></div>
+  </div>
+  <nav id="tabs">
+    <button data-tab="citizen" class="on">1 · Citizen report</button>
+    <button data-tab="dash">2 · Governance dashboard</button>
+    <button data-tab="evidence">3 · Bus-camera evidence</button>
+    <button data-tab="brief">4 · Policy brief & Ask</button>
+    <button data-tab="about">About</button>
+  </nav>
+  <button id="aiStatus" class="pill" title="Gemini connection">Gemini: checking…</button>
+</header>
+
+<main>
+<!-- 1 CITIZEN -->
+<section id="citizen" class="tab on">
+  <div class="grid2">
+    <div class="card">
+      <h2>Report a road or civic problem <span class="muted">— any language, voice, text or photo</span></h2>
+      <div class="row"><label>District
+        <select id="cDistrict"></select></label>
+      <label>Channel <select id="cChannel"><option value="web">Web / app</option><option value="whatsapp">WhatsApp</option><option value="voice">Voice / IVR call</option><option value="sms">SMS</option><option value="csc">Common Service Centre</option></select></label></div>
+      <label>What is the problem? <span class="muted">(type in Hindi, Odia, Tamil, Bengali… or English)</span>
+        <textarea id="cText" rows="4" placeholder="उदा. मुख्य सड़क पर बड़ा गड्ढा है, रोज़ बाइक वाले गिरते हैं…"></textarea></label>
+      <div class="row">
+        <button id="cMic" class="btn ghost">🎙 Speak (record)</button>
+        <label class="btn ghost file">📷 Add photo<input id="cPhoto" type="file" accept="image/*" capture="environment" hidden></label>
+        <button id="cLoc" class="btn ghost">📍 Use my location</button>
+      </div>
+      <div id="cMedia" class="media"></div>
+      <div class="muted small" id="cLocTxt">Location: district centre (tap the map or use your location to refine)</div>
+      <div id="cMap" class="minimap"></div>
+      <div class="row">
+        <button id="cSubmit" class="btn">Submit — Gemini understands it</button>
+        <button id="cExample" class="btn ghost">Try an example</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>What Gemini understood</h2>
+      <div id="cResult" class="result empty">Your report will be transcribed, translated, classified, graded for severity and routed to the right department — and you get a reply in your own language.</div>
+      <h3>Recent reports on this district</h3>
+      <ul id="cRecent" class="list"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- 2 DASHBOARD -->
+<section id="dash" class="tab">
+  <div class="kpis" id="kpis"></div>
+  <div class="grid2 wide">
+    <div class="card pad0">
+      <div class="maphead">
+        <select id="fState"><option value="">All states</option></select>
+        <select id="fCat"><option value="">All categories</option></select>
+        <label class="chk"><input type="checkbox" id="lCit" checked> Citizen requests</label>
+        <label class="chk"><input type="checkbox" id="lCam" checked> Bus-camera evidence</label>
+        <label class="chk"><input type="checkbox" id="lHot" checked> Hotspots</label>
+        <label class="chk"><input type="checkbox" id="lWk" checked> Sanctioned works</label>
+      </div>
+      <div id="map" class="bigmap"></div>
+    </div>
+    <div class="card">
+      <h2>Priority works list <span class="muted">(ranked hotspots)</span></h2>
+      <p class="muted small">Blue squares = sanctioned works (public investment plan); each hotspot shows whether money is already going there. Score = 35% citizen demand · 25% severity · 20% camera-confirmed · 10% vulnerable users · 10% district population exposure (Census 2011). Every component is shown — nothing is a black box.</p>
+      <div id="rank" class="rank"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 EVIDENCE -->
+<section id="evidence" class="tab">
+  <div class="card">
+    <h2>Automatic evidence from city buses <span class="muted">— our edge node, real drives</span></h2>
+    <p>A laptop-class edge box on a bus runs one object detector (YOLO11 + our pothole model) across four cameras, blurs number plates on the device, and sends only <b>events</b> — not video. Real runs: <b>Varanasi</b> (29 Aug 2026, phone GNSS) and <b>Bhubaneswar</b> 4-camera drive (19 Sep 2026). <b>Gemini 2nd opinion</b> re-reads each crop, confirms or rejects the defect and writes the work-order line — so officials act on verified evidence.</p>
+    <div class="kpis" id="evKpis"></div>
+    <video id="busVid" src="assets/bus_drive.mp4" muted loop playsinline controls style="width:100%;max-height:420px;border-radius:10px;background:#000"></video>
+    <p class="small muted">Screen recording of the edge node processing the real Bhubaneswar drive: four cameras, one detector, plates blurred, defects pinned on the route.</p>
+  </div>
+  <div class="card">
+    <h3>Pothole crops sent by the bus (click “Gemini verify”)</h3>
+    <div id="gallery" class="gallery"></div>
+  </div>
+</section>
+
+<!-- 4 BRIEF -->
+<section id="brief" class="tab">
+  <div class="grid2">
+    <div class="card">
+      <h2>Policy brief for decision-makers</h2>
+      <div class="row">
+        <label>Scope <select id="bScope"><option value="">All India</option></select></label>
+        <label>Language <select id="bLang"></select></label>
+        <button id="bGo" class="btn">Generate with Gemini</button>
+      </div>
+      <div id="bOut" class="md empty">Gemini reads the aggregated hotspots (demand, severity, camera confirmation, population) and writes a one-page, ministry-ready brief with a costed-priority works list — in the language you choose.</div>
+    </div>
+    <div class="card">
+      <h2>Ask the data</h2>
+      <div class="row"><input id="qIn" placeholder="e.g. Which 3 districts need urgent monsoon drainage work, and why?"><button id="qGo" class="btn">Ask</button></div>
+      <div class="chips" id="qChips"></div>
+      <div id="qOut" class="md empty">Answers are grounded only in the platform's data.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="tab">
+  <div class="card md" id="aboutMd"></div>
+</section>
+</main>
+
+<dialog id="keyDlg">
+  <form method="dialog">
+    <h3>Gemini API key</h3>
+    <p class="small">The deployed demo ships with a domain-restricted key. If it is exhausted, paste your own key from <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a>. It is stored only in this browser.</p>
+    <input id="keyIn" placeholder="AIza…" autocomplete="off">
+    <div class="row"><button value="save" class="btn" id="keySave">Save</button><button value="cancel" class="btn ghost">Close</button></div>
+  </form>
+</dialog>
+
+<footer>Team <b>The Road Runners</b> · Build with AI: Code for Communities (Track 1 — AI for DPI & Governance) · Built on Google Gemini + Firebase · Open source · Sample citizen requests are synthetic and labelled; camera evidence is from our own real drives.</footer>
+
+<script src="vendor/leaflet.js"></script>
+<script src="vendor/marked.min.js"></script>
+<script src="config.js"></script>
+<script src="gemini.js"></script>
+<script src="app.js"></script>
+<script src="demo.js"></script>
+</body>
+</html>

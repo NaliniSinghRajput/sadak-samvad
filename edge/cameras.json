@@ -1,0 +1,9 @@
+{
+  "cameras": [
+    {"id": "cam1", "name": "Camera 1", "position": "Front", "kind": "mjpeg", "url": ""},
+    {"id": "cam2", "name": "Camera 2", "position": "Rear",  "kind": "mjpeg", "url": ""},
+    {"id": "cam3", "name": "Camera 3", "position": "Left",  "kind": "mjpeg", "url": ""},
+    {"id": "cam4", "name": "Camera 4", "position": "Right", "kind": "mjpeg", "url": ""}
+  ],
+  "note": "Addresses are saved here by the dashboard's Save button. They change every time a phone rejoins the hotspot, except the phone hosting it."
+}

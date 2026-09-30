@@ -1,0 +1,13 @@
+# Project_v3 — runtime dependencies
+#
+# The heavy three (torch, ultralytics, opencv) already live in Project_v1's
+# environment. run_dashboard_v3.bat borrows that environment rather than
+# downloading several gigabytes a second time, and adds only the small web
+# packages below if they are missing. Project_v1's own source is never written to.
+ultralytics>=8.3
+opencv-python>=4.9
+numpy>=1.26
+fastapi>=0.110
+uvicorn[standard]>=0.27
+websockets>=12.0
+python-multipart>=0.0.9

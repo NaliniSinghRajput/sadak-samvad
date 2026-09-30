@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Road Runners — multi-camera edge node</title>
+<link rel="stylesheet" href="/web/app.css">
+</head>
+<body>
+
+<header class="banner">
+  <img class="lockup" src="/web/assets/02-lockup-runner.svg" alt="The Road Runners">
+  <div class="banner-mid">
+    <div class="ps">SIH 2026 · PS 26124 · BHARAT ELECTRONICS LIMITED</div>
+    <h1>Mobile Urban Intelligence — four-camera edge node <span class="ver">v3</span></h1>
+  </div>
+  <div class="banner-right">
+    <span id="feedBadge" class="feed-badge"><span class="dot"></span><span id="feedText">STANDBY</span></span>
+    <div class="clock"><span id="clock">--:--</span> <span class="muted" id="sourceLabel"></span>
+      <span id="linkChip" class="chip linkchip hidden">link to node lost — retrying</span></div>
+  </div>
+  <div class="banner-actions">
+    <button id="btnPause" class="btn ghost hidden">Pause</button>
+    <button id="btnStop" class="btn ghost hidden">Stop</button>
+    <button id="btnNew" class="btn ghost hidden">Change source</button>
+    <button id="btnLimits" class="btn ghost">What this does &amp; does not do</button>
+  </div>
+</header>
+
+<!-- ══════════════════ SETUP ══════════════════ -->
+<main id="setup" class="setup">
+  <div class="setup-card">
+    <div class="tabs">
+      <button class="tab active" data-tab="live">Live cameras</button>
+      <button class="tab" data-tab="file">Recorded video</button>
+    </div>
+
+    <!-- LIVE -->
+    <section class="tabpane" id="pane-live">
+      <p class="lead">
+        Four phones on the hotspot, each running <b>IP Webcam</b> with the server started.
+        Type the address the phone shows — <span class="mono">10.211.146.5</span> is enough —
+        and press <b>Test</b>. Nothing leaves this laptop.
+      </p>
+      <table class="camtable">
+        <thead><tr><th>Camera</th><th>Mounted</th><th>Source</th><th>Address / index</th><th></th><th>Test result</th></tr></thead>
+        <tbody id="camRows"></tbody>
+      </table>
+      <div class="row-actions posrow">
+        <label class="inline">Position feed
+          <select id="livePos">
+            <option value="none" selected>None — events carry time and camera only</option>
+            <option value="phone">A phone's own GPS (IP Webcam → Location data ON)</option>
+          </select>
+        </label>
+        <label class="inline hidden" id="livePosHost">from
+          <select id="livePosCam"></select>
+          <button id="btnTestGps" class="btn small">Test GPS</button>
+          <span class="probe wait" id="gpsResult">not tested</span>
+        </label>
+      </div>
+      <div class="row-actions">
+        <button id="btnTestAll" class="btn">Test all</button>
+        <button id="btnSaveCams" class="btn ghost">Save addresses</button>
+        <span class="grow"></span>
+        <label class="inline">Working width
+          <select id="workWidth">
+            <option value="512">512 px — fastest</option>
+            <option value="640" selected>640 px — balanced</option>
+            <option value="960">960 px — as measured in v1/v2</option>
+          </select>
+        </label>
+        <button id="btnStartLive" class="btn primary">Start live analysis</button>
+      </div>
+      <p class="fineprint">
+        No phones to hand? Run <span class="mono">tools\fake_cameras.py</span> to serve four
+        camera streams from one of the recorded drives, then use the addresses it prints. The
+        dashboard cannot tell the difference, and neither can the detector — which is the point
+        of testing it that way.
+      </p>
+    </section>
+
+    <!-- FILE -->
+    <section class="tabpane hidden" id="pane-file">
+      <p class="lead">
+        A recorded drive goes through the <b>same scheduler</b> as the live cameras. A 2×2 grid
+        recording is split back into four cameras, so what you see here is what the live node does.
+      </p>
+      <div id="videoList" class="videolist"></div>
+      <div class="row-actions posrow">
+        <label class="inline">Position feed
+          <select id="filePos"><option value="none">None — no GPS track for this drive</option></select>
+        </label>
+        <span class="muted" id="filePosNote"></span>
+      </div>
+      <div class="row-actions">
+        <label class="inline">Start at
+          <input id="startAt" type="number" min="0" step="10" value="0" style="width:76px"> s
+        </label>
+        <label class="inline"><input type="checkbox" id="loopVid" checked> loop</label>
+        <span class="grow"></span>
+        <label class="inline">Upload your own
+          <input type="file" id="fileInput" accept="video/*">
+        </label>
+        <button id="btnStartFile" class="btn primary" disabled>Start analysis</button>
+      </div>
+      <div id="uploadNote" class="fineprint"></div>
+    </section>
+
+    <div id="bootStatus" class="bootstatus hidden"><span class="spinner"></span> <span id="bootText"></span></div>
+  </div>
+</main>
+
+<!-- ══════════════════ RUNNING ══════════════════ -->
+<main id="live" class="live hidden">
+  <section class="cams" id="camGrid"></section>
+
+  <aside class="side side-a">
+    <div class="kpis" id="kpis"></div>
+
+    <div class="panel map">
+      <h3>Where the defects are <span class="muted" id="mapSource"></span></h3>
+      <div class="maptools">
+        <span class="chipset">
+          <button class="chipbtn on" data-mapfilter="defects">Potholes</button>
+          <button class="chipbtn" data-mapfilter="all">All hazards</button>
+        </span>
+        <span class="grow"></span>
+        <button class="btn ghost small" id="btnMapBig">Expand</button>
+      </div>
+      <canvas id="mapCanvas" height="250"></canvas>
+      <div class="maplegend" id="mapLegend"></div>
+      <div id="mapEmpty" class="mapempty"></div>
+    </div>
+
+  </aside>
+
+  <aside class="side side-b">
+    <div class="panel">
+      <h3>Inference schedule <span class="muted">one detector, shared</span></h3>
+      <canvas id="schedChart" height="150"></canvas>
+      <p class="fineprint" id="schedNote"></p>
+      <p class="fineprint" id="nodeNote"></p>
+    </div>
+
+    <div class="panel">
+      <h3>What has been seen <span class="muted">de-duplicated</span></h3>
+      <canvas id="mixChart" height="150"></canvas>
+    </div>
+    <div class="panel">
+      <h3>Bandwidth at the edge <span class="muted">measured on this run</span></h3>
+      <canvas id="bwChart" height="120"></canvas>
+      <div class="bwlines" id="bwLines"></div>
+    </div>
+
+  </aside>
+
+  <section class="bottom">
+    <div class="panel">
+      <h3>Event timeline <span class="muted">by camera, newest on the right</span></h3>
+      <canvas id="timeline" height="150"></canvas>
+      <div class="legend" id="timelineLegend"></div>
+    </div>
+    <div class="panel alerts">
+      <h3>Alert stack <span class="muted" id="alertCount"></span></h3>
+      <div id="alertList" class="alertlist"></div>
+    </div>
+    <div class="panel ledger">
+      <h3>Repair ledger <span class="muted">operator verifies every row</span></h3>
+      <div id="ledger" class="ledgerlist"></div>
+      <div class="row-actions">
+        <a class="btn ghost small" href="/api/export/events.jsonl" target="_blank">Export events (JSONL)</a>
+        <a class="btn ghost small" href="/api/export/ledger.csv" target="_blank">Export ledger (CSV)</a>
+        <a class="btn ghost small" href="/api/report.html" target="_blank">One-page report</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ══════════════════ LIMITS / CAPABILITIES ══════════════════ -->
+<div id="limitsModal" class="modal hidden">
+  <div class="modal-card">
+    <button class="modal-x" id="btnCloseLimits">×</button>
+    <h2>Capability maturity — and the limits, on the same page</h2>
+    <p class="lead">Every ask in PS 26124 with an honest tag. <b>LIVE</b> is running here, with a
+      number behind it. <b>DERIVED</b> is computed from the telemetry. <b>DESIGNED</b> is not built.</p>
+    <div id="capTable"></div>
+    <h3>Held-out test metrics — the only accuracy numbers we quote</h3>
+    <div id="metrics"></div>
+    <h3>What this node does not do</h3>
+    <ul id="limitList"></ul>
+    <p class="fineprint" id="attribution"></p>
+  </div>
+</div>
+
+<div id="mapModal" class="modal hidden">
+  <div class="modal-card map-card">
+    <button class="modal-x" id="btnCloseMap">×</button>
+    <h2>Defect map <span class="muted" id="mapBigSource"></span></h2>
+    <canvas id="mapBig" height="620"></canvas>
+    <div class="maplegend" id="mapBigLegend"></div>
+    <p class="fineprint" id="mapBigNote"></p>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+<script src="/web/app.js"></script>
+</body>
+</html>
