@@ -85,7 +85,7 @@
 <section id="evidence" class="tab">
   <div class="card">
     <h2>Automatic evidence from city buses <span class="muted">— our edge node, real drives</span></h2>
-    <p>A laptop-class edge box on a bus runs one object detector (YOLO11 + our pothole model) across four cameras, blurs number plates on the device, and sends only <b>events</b> — not video. Real runs: <b>Varanasi</b> (29 Aug 2026, phone GNSS) and <b>Bhubaneswar</b> 4-camera drive (19 Sep 2026). <b>Gemini 2nd opinion</b> re-reads each crop, confirms or rejects the defect and writes the work-order line — so officials act on verified evidence.</p>
+    <p>A laptop-class edge box on a bus runs one object detector (YOLO11 + our pothole model) across four cameras, blurs number plates on the device, and sends only <b>events</b> — not video. Real runs: the <b>Bhubaneswar</b> 4-camera drive, KIIT → Esplanade (19 Sep 2026), where the node was built and tested; and a <b>Varanasi</b> single-camera drive with phone-GNSS geotags (29 Aug 2026). <b>Gemini 2nd opinion</b> re-reads each crop, confirms or rejects the defect and writes the work-order line — so officials act on verified evidence.</p>
     <div class="kpis" id="evKpis"></div>
     <video id="busVid" src="assets/bus_drive.mp4" muted loop playsinline controls style="width:100%;max-height:420px;border-radius:10px;background:#000"></video>
     <p class="small muted">Screen recording of the edge node processing the real Bhubaneswar drive: four cameras, one detector, plates blurred, defects pinned on the route.</p>

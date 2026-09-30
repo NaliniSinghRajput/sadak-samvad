@@ -57,7 +57,7 @@
 
     // 2. Odia + photo
     q('#cDistrict').value = 1; q('#cDistrict').onchange(); q('#cChannel').value = 'web';
-    await say('Now Bhubaneswar, in Odia, with a photograph.');
+    await say('Now Bhubaneswar, in Odia, with a photograph, near Rasulgarh on the route our four-camera bus rig drove.');
     await typeInto(q('#cText'), 'ରସୁଲଗଡ଼ ଛକ ପାଖରେ ରାସ୍ତା ଭାଙ୍ଗିଯାଇଛି, ବର୍ଷାରେ ପାଣି ଜମି ରହୁଛି ଓ ବାଇକ୍ ଖସିପଡୁଛି।');
     try {
       const b = await (await fetch('assets/frames/road_65_c1.jpg')).blob();
@@ -75,7 +75,7 @@
     await say('This is the governance dashboard. Citizen requests in orange, in thirteen languages across thirteen states. Bus camera evidence in green. Sanctioned public works, from the investment plan, in blue.');
     await say('Requests and evidence are fused into hotspots, and ranked with a transparent score: citizen demand, severity, camera confirmation, vulnerable users, and district population from the census.');
     q('#rank .hot')?.click(); await sleep(2500);
-    await say('The top hotspot in Varanasi is confirmed by both citizens and our bus cameras. Each hotspot also shows whether money is already sanctioned there.');
+    await say('This top hotspot in Varanasi is confirmed by both citizen reports and our G P S tagged camera run. Each hotspot also shows whether money is already sanctioned there.');
     scrollTo('#kpis'); await sleep(600);
     await say('And here is the number the track asks for: only a small share of the planned spend lands on the top twenty citizen hotspots, and many of them have no sanctioned work at all. That is misaligned public spending, made visible.');
     q('#fState').value = 'Odisha'; q('#fState').onchange(); await sleep(1500);
@@ -85,7 +85,7 @@
     // 4. Evidence
     tab('evidence'); await sleep(800);
     const v = q('#busVid'); v.currentTime = 0; v.play();
-    await say('Where does the camera evidence come from? Our edge node runs on a city bus. Four cameras, one detector on a laptop class box, number plates blurred on the device, and only events, not video, sent to the cloud. This is a real drive in Bhubaneswar.');
+    await say('Where does the camera evidence come from? Our edge node runs on a city bus. Four cameras, one detector on a laptop class box, number plates blurred on the device, and only events, not video, sent to the cloud. This is our real four-camera drive in Bhubaneswar, from KIIT to Esplanade. In Varanasi, a single-camera run added thirty four pothole locations with phone GPS geotags.');
     await sleep(3000);
     scrollTo('#gallery', 'center'); await sleep(800);
     const btns = [...document.querySelectorAll('#gallery button')];

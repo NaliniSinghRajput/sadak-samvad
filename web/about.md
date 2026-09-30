@@ -5,7 +5,7 @@
 Roads, drains and streetlights are the development requests Indians raise most often, yet complaints sit in fragmented portals, in 22 languages, with no link to where money is actually being sanctioned. **Sadak Samvad** is a multilingual, voice-first Digital Public Good that turns two streams into one ranked, state-ready works list:
 
 1. **Citizens** report by **voice, text, photo, WhatsApp, IVR or a Common Service Centre**, in any scheduled Indian language. **Gemini** transcribes, translates, classifies, grades severity, reads the photo, routes it to the right department and replies to the citizen in their own language.
-2. **City buses** carry our edge camera node (built and road-tested by the team: Varanasi, Aug 2026; Bhubaneswar 4-camera drive, Sep 2026). It detects potholes and hazards on-device, blurs number plates, and sends only events. **Gemini vision** re-checks each crop and writes the work-order line.
+2. **City buses** carry our edge camera node (built and road-tested by the team in Bhubaneswar — 4-camera drive KIIT → Esplanade, Sep 2026 — plus a single-camera, GPS-geotagged run in Varanasi, Aug 2026). It detects potholes and hazards on-device, blurs number plates, and sends only events. **Gemini vision** re-checks each crop and writes the work-order line.
 3. The **priority engine** fuses demand, severity, camera confirmation, vulnerable users and district population (Census 2011), and checks each hotspot against the **sanctioned-works plan** — exposing unfunded hotspots and spending that lands where nobody asked.
 4. **Gemini** writes the policy brief for a Municipal Commissioner, a State PWD or a Ministry — in the reader's language — and answers questions grounded only in the data.
 
@@ -19,7 +19,7 @@ Roads, drains and streetlights are the development requests Indians raise most o
 | Scale path | Cloud Run intake API + WhatsApp Business webhook, BigQuery for national analytics, Vertex AI for hotspot forecasting, Google Maps Platform |
 
 ## Data used in this prototype — stated plainly
-* **Bus-camera evidence — real.** 34 GPS-tagged potholes (Varanasi, 29 Aug 2026) and a 3,944-detection 4-camera drive over 13.5 km in Bhubaneswar (19 Sep 2026; GPS was off, so positions are interpolated along the driven route by time and marked so).
+* **Bus-camera evidence — real.** 34 GPS-tagged potholes from a single-camera run in Varanasi (29 Aug 2026) and a 3,944-detection 4-camera drive over 13.5 km in Bhubaneswar (19 Sep 2026; GPS was off, so positions are interpolated along the driven route by time and marked so).
 * **District populations — real**, Census of India 2011.
 * **Citizen requests and sanctioned works — synthetic samples**, labelled "sample" everywhere, standing in for CPGRAMS / state grievance portals and state works lists until those feeds are connected. Every report you submit here is real and is stored live.
 
