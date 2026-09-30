@@ -6,6 +6,9 @@
 <title>Sadak Samvad — AI for road & civic infrastructure governance</title>
 <meta name="description" content="Citizens report in any Indian language by voice, text or photo; bus cameras add evidence; Gemini turns both into a ranked, state-ready public-works list.">
 <link rel="icon" href="assets/favicon.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0f1928">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
 <link rel="stylesheet" href="vendor/leaflet.css">
 <link rel="stylesheet" href="style.css">
 </head>
@@ -140,5 +143,6 @@
 <script src="gemini.js"></script>
 <script src="app.js"></script>
 <script src="demo.js"></script>
+<script>if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});</script>
 </body>
 </html>

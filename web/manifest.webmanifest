@@ -1,0 +1,13 @@
+{
+  "name": "Sadak Samvad — सड़क संवाद",
+  "short_name": "Sadak Samvad",
+  "description": "Report road and civic problems in any Indian language by voice, text or photo.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0d1420",
+  "theme_color": "#0f1928",
+  "icons": [
+    { "src": "assets/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
