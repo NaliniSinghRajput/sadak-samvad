@@ -34,8 +34,9 @@ const Gemini = (() => {
       try { const out = await call(m, body); model = m; return opts.json ? { ...JSON.parse(out.txt), _model: m } : { text: out.txt, _model: m }; }
       catch (e) {
         last = e;
-        const modelProblem = e.status === 404 || (e.status === 400 && /model/i.test(e.message) && !/key/i.test(e.message));
-        if (!modelProblem) throw e;   // wrong key, quota etc. -> surface it
+        const modelProblem = [404, 429, 500, 503].includes(e.status) || (e.status === 400 && /model/i.test(e.message) && !/key/i.test(e.message));
+        if (!modelProblem) throw e;   // wrong key etc. -> surface it; busy/missing model -> try the next one
+        if (model === m) model = null;
       }
     }
     throw last;
